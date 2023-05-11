@@ -3,7 +3,6 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import App from "./App";
 import ErrorBoundary from "./components/ErrorBoundary";
-import "./index.css";
 import Home from "./pages/Home";
 import reportWebVitals from "./reportWebVitals";
 
