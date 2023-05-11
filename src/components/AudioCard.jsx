@@ -34,7 +34,7 @@ export default function AudioCard({ audioUrl }) {
 			}}
 		>
 			<WaveSurfer plugins={plugins} onMount={handleWSMount}>
-				<WaveForm id="waveform" cursorColor="red" />
+				<WaveForm id="waveform" cursorColor="#7b0dad" />
 			</WaveSurfer>
 			<button onClick={play}>Play / Pause</button>
 		</div>

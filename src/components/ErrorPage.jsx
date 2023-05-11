@@ -1,5 +1,6 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import FillButton from "./FillButton";
 
 export default function ErrorPage() {
 	const navigate = useNavigate();
@@ -18,18 +19,13 @@ export default function ErrorPage() {
 			</div>
 			<br />
 			<div className="content-element">
-				<Link to="/" className="aibeat-button pink-button">
-					HOME
-				</Link>
-
-				<button
+				<FillButton
 					onClick={() => {
 						navigate("/", { replace: true });
 					}}
-					className="aibeat-button pink-button"
 				>
 					HOME
-				</button>
+				</FillButton>
 			</div>
 		</div>
 	);
