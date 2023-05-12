@@ -189,19 +189,19 @@ html body {
 	background: #e455f4;
 }
 *::-webkit-input-placeholder {
-	color: #333333;
+	color: #cdcdcd;
 	opacity: 1;
 }
 *:-moz-placeholder {
-	color: #333333;
+	color: #cdcdcd;
 	opacity: 1;
 }
 *::-moz-placeholder {
-	color: #333333;
+	color: #cdcdcd;
 	opacity: 1;
 }
 *:-ms-input-placeholder {
-	color: #333333;
+	color: #cdcdcd;
 	opacity: 1;
 }
 a,
@@ -1229,3 +1229,371 @@ font-family: 'Gilroy-medium',sans-serif;
 font-family: 'Gilroy-semibold',sans-serif;
 font-family: 'Gilroy-bold',sans-serif;
  */
+.audio-section {
+	margin-bottom: 15px;
+}
+
+.drawer {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 300px;
+	height: 100vh;
+	background-color: #fff;
+	transform: translateX(-100%);
+	transition: transform 0.3s ease-in-out;
+}
+
+.drawer.open {
+	transform: translateX(0);
+}
+
+.bottom-sheet {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 100px;
+	background-color: #191b26;
+	transform: translateY(100%);
+	transition: transform 0.3s ease-in-out;
+	z-index: 9999;
+}
+
+.bottom-sheet.open {
+	transform: translateY(0);
+}
+#waveform {
+	width: 100%;
+	overflow: hidden;
+	scroll-behavior: auto;
+}
+
+.waveSurfer {
+	width: 100%;
+	background-color: white;
+	border-radius: 10px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.waveSurfer__wave {
+	width: 30%;
+	height: 80px;
+	border-radius: 10px;
+	display: flex;
+	text-align: center;
+	justify-content: space-between;
+	align-items: center;
+	margin: 0px 20px;
+}
+.audio-info {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: 0px 10px 0px 5px;
+	width: 25%;
+}
+.audio-play {
+	padding: 0px 20px;
+	background-color: transparent;
+}
+.audio-stop {
+	padding: 0px 20px;
+	background-color: transparent;
+}
+.audio-time {
+	display: flex;
+	align-items: center;
+	background-color: transparent;
+	width: 50px;
+}
+.audio-play:before {
+	content: "\f04b";
+	font-size: 20px;
+	font-family: "FontAwesome";
+	color: #000;
+	margin: 0px -40px;
+}
+.audio-stop:before {
+	content: "\f04c";
+	font-size: 20px;
+	font-family: "FontAwesome";
+	color: #000;
+	margin: 0px -40px;
+}
+
+.audio-time:before {
+	content: "\f017	";
+	font-size: 20px;
+	font-family: "FontAwesome";
+	color: #000;
+	padding: 0px 5px;
+}
+
+.audio-icon {
+	width: 50px;
+	margin-right: 10px;
+	overflow: hidden;
+}
+.basic-info {
+	width: 200px;
+}
+.title {
+	font-size: 20px;
+	font-weight: 600;
+	margin-top: 2px;
+	margin-bottom: -2px;
+	overflow: hidden;
+}
+.title_sub {
+	font-size: 16px;
+	font-weight: 500;
+	overflow: hidden;
+}
+.audio-mute {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: transparent;
+	padding: 0px !important;
+}
+.audio-mute:before {
+	content: "\f028";
+	font-size: 20px;
+	font-family: "FontAwesome";
+	color: #000;
+	position: absolute;
+	margin: 0px -20px;
+}
+
+.audio-unmute {
+	background-color: transparent;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0px !important;
+}
+
+.audio-unmute:before {
+	content: "\f026";
+	font-size: 20px;
+	font-family: "FontAwesome";
+	color: #000;
+	position: absolute;
+	margin: 0px -20px;
+}
+
+.volume {
+	padding: 0px !important;
+}
+
+.volume-basic {
+	display: flex;
+	align-items: center;
+}
+.audio-info-right {
+	display: flex;
+	align-items: center;
+	width: 25%;
+}
+
+.download {
+	background-color: transparent;
+	padding: 0px !important;
+	width: 20px;
+	display: flex;
+	align-items: center;
+}
+.download:before {
+	content: "\f019";
+	font-size: 20px;
+	font-family: "FontAwesome";
+	color: #000;
+	position: absolute;
+	margin: 0px 20px;
+}
+.download:hover {
+	background-color: red !important;
+}
+
+.wrapper {
+	margin: auto;
+
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+.wrapper .table {
+	background: white;
+	padding: 30px;
+	position: relative;
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+	text-align: center;
+	border-radius: 15px;
+}
+.table .price-section {
+	display: flex;
+	justify-content: center;
+}
+.table .price-area {
+	height: 120px;
+	border-radius: 50%;
+	padding: 2px;
+}
+
+.aj_p {
+	font-size: 20px;
+	font-weight: bold;
+	text-align: center;
+	color: black;
+	margin-bottom: 5px;
+}
+
+p.aj_des {
+	color: black;
+	padding-bottom: 30px;
+	font-size: 14px;
+}
+
+.table.premium {
+	margin: -20px;
+}
+
+.premium_all {
+	padding-top: 22px;
+}
+
+.price-area .inner-area {
+	height: 100%;
+	width: 100%;
+	line-height: 117px;
+	text-align: center;
+	color: black;
+	position: relative;
+}
+
+.price-area .inner-area .text {
+	font-size: 25px;
+	font-weight: 400;
+	position: absolute;
+	top: -10px;
+	left: 5px;
+}
+
+.price-area .inner-area .price {
+	font-size: 45px;
+	font-weight: 500;
+	margin-left: 16px;
+}
+
+@media (max-width: 756px) {
+	.wrapper .table {
+		width: 100%;
+	}
+
+	.table.premium {
+		margin: 40px 0px;
+	}
+	.table.ultimate {
+		margin: 0px;
+	}
+}
+
+::selection {
+	color: #fff;
+}
+
+.table .ribbon {
+	width: 150px;
+	height: 150px;
+	position: absolute;
+	top: -10px;
+	left: -10px;
+	overflow: hidden;
+}
+
+.table .ribbon::before,
+table .ribbon::after {
+	position: absolute;
+	content: "";
+	z-index: -1;
+	display: block;
+	border: 7px solid #ba24f0;
+	border-top-color: transparent;
+	border-left-color: transparent;
+}
+
+.table .ribbon::before {
+	top: 0px;
+	right: 15px;
+}
+
+.table .ribbon::after {
+	bottom: 15px;
+	left: 0px;
+}
+
+.table .ribbon span {
+	position: absolute;
+	top: 30px;
+	right: 0;
+	transform: rotate(-45deg);
+	width: 200px;
+	background: #ba24f0;
+	padding: 10px 0;
+	color: #fff;
+	text-align: center;
+	font-size: 17px;
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.12);
+}
+
+.subscription {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 30px 0px;
+}
+
+.dropdown {
+	position: relative;
+	display: inline-block;
+}
+
+.dropdown-toggle {
+	background-color: transparent;
+	color: #333;
+	padding: 8px 12px;
+	border: none;
+	cursor: pointer;
+}
+
+.dropdown-menu {
+	position: absolute;
+	top: 100%;
+	right: 10%;
+	z-index: 1;
+	display: none;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.dropdown-menu li {
+	background-color: #f9f9f9;
+}
+
+.dropdown-menu li a {
+	display: block;
+	padding: 8px 12px;
+	text-decoration: none;
+	color: #333;
+}
+
+.dropdown:hover .dropdown-menu {
+	display: block;
+}
+
+.ant-modal-content {
+	background-color: #1b2d3b;
+}

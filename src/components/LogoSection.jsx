@@ -1,8 +1,8 @@
 import React from "react";
 
 export default function LogoSection({ logoSection }) {
-	const icons = logoSection.map((icon) => (
-		<li className="logo-image-1 logo_list-images">
+	const icons = logoSection.map((icon, i) => (
+		<li key={i} className="logo-image-1 logo_list-images">
 			<a onClick={icon?.navigate} style={{ cursor: "pointer" }}>
 				<img {...icon?.image} />
 			</a>

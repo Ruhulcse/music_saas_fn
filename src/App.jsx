@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import AudioCard from "./components/AudioCard";
+import React, { useEffect, useRef, useState } from "react";
+import { ToastContainer } from "react-toastify";
 import Footer from "./components/Footer";
 import NavBar from "./components/NavBar";
-import horseAudio from "./easy-lifestyle-137766.mp3";
+
 export default function App({ children }) {
 	const [scrollY, setScrollY] = useState(0);
-
+	const contactFormRef = useRef(null);
 	useEffect(() => {
 		function handleScroll() {
 			setScrollY(window.scrollY);
@@ -15,15 +15,21 @@ export default function App({ children }) {
 
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, []);
-	function scrollToTop() {
+	const scrollToTop = () => {
 		window.scrollTo({ top: 0, behavior: "smooth" });
-	}
+	};
+
+	const handleContactClick = () => {
+		if (contactFormRef.current) {
+			contactFormRef.current.scrollIntoView({ behavior: "smooth" });
+		}
+	};
 	return (
 		<>
 			<NavBar scrollY={scrollY} />
-			<AudioCard audioUrl={horseAudio} />
 			{children}
 			<Footer />
+			<ToastContainer />
 			<button
 				onClick={scrollToTop}
 				id="myBtn"

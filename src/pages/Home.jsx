@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AboutSection from "../components/AboutSection";
+import AudioList from "../components/AudioList";
 import BannerSection from "../components/BannerSection";
 import CreateSection from "../components/CreateSection";
 import LogoSection from "../components/LogoSection";
+import SubscriptionCard from "../components/SubscriptionCard";
 import Top10Beats from "../components/Top10Beats";
 import WorksSection from "../components/WorksSection";
 import { default as Icon1, default as Icon5 } from "../static/images/Icon-1.png";
@@ -24,7 +26,39 @@ import CreateImg from "../static/images/create-img.png";
 import WorkImage1 from "../static/images/works-img1.png";
 import WorkImage2 from "../static/images/works-img2.png";
 import WorkImage3 from "../static/images/works-img3.png";
+import { getPlan, get_music } from "../utils/apiCall";
 export default function Home() {
+	const [search, setSearch] = useState("");
+	const [audioList, setAudioList] = useState([]);
+	const [subscription, setSubscription] = useState([]);
+
+	useEffect(() => {
+		const init = async () => {
+			const music = await get_music(search);
+			setAudioList(music);
+		};
+		init();
+	}, [search]);
+
+	useEffect(() => {
+		const init = async () => {
+			const subscriptionPla = await getPlan();
+			setSubscription(subscriptionPla);
+		};
+		init();
+	}, []);
+
+	const onSearchHandlerChange = (e) => {
+		setSearch(e.target.value);
+	};
+	const onSearchHandlerSubmit = async (e) => {
+		e.preventDefault();
+		const music = await get_music(search);
+		setAudioList(music);
+	};
+
+	const subscriptionHandle = (item) => {};
+
 	const createCustomMusic = {
 		title: (
 			<>
@@ -38,14 +72,15 @@ export default function Home() {
 			action: (e) => alert("ok"),
 		},
 	};
+
 	const searchYourBeat = {
 		title: "Describe Your Beat",
-		onSubmit: (e) => alert("ok"),
+		onSubmit: onSearchHandlerSubmit,
 		inputText: {
 			type: "text",
-			value: "",
+			value: search,
 			placeholder: "Search Your Beat Here",
-			onChange: (e) => alert("ok"),
+			onChange: onSearchHandlerChange,
 		},
 		inputSubmit: {
 			type: "submit",
@@ -267,11 +302,17 @@ export default function Home() {
 			alr: "Create Img",
 		},
 	};
+
 	return (
 		<main>
 			<BannerSection createCustomMusic={createCustomMusic} searchYourBeat={searchYourBeat} />
+			<AudioList audioList={audioList} />
 			<LogoSection logoSection={logoSection} />
 			<AboutSection {...aboutSection} />
+			<SubscriptionCard subscription={subscription} subscriptionHandle={subscriptionHandle} />
+			<br />
+			<br />
+			<br />
 			<WorksSection {...worksSection} />
 			<Top10Beats {...top10Beats} />
 			<CreateSection {...createSection} />
