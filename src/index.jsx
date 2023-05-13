@@ -7,6 +7,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Home from "./pages/Home";
+import Subscription from "./pages/Subscription";
 import reportWebVitals from "./reportWebVitals";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -18,6 +19,7 @@ root.render(
 						<Route exact path="/" element={<Home />} />
 						<Route exact path="/login" element={<Login />} />
 						<Route exact path="/signup" element={<Signup />} />
+						<Route exact path="/subscription" element={<Subscription />} />
 					</Routes>
 				</App>
 			</ErrorBoundary>

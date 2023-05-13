@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AboutSection from "../components/AboutSection";
 import AudioList from "../components/AudioList";
 import BannerSection from "../components/BannerSection";
@@ -28,6 +29,7 @@ import WorkImage2 from "../static/images/works-img2.png";
 import WorkImage3 from "../static/images/works-img3.png";
 import { getPlan, get_music } from "../utils/apiCall";
 export default function Home() {
+	const navigate = useNavigate();
 	const [search, setSearch] = useState("");
 	const [audioList, setAudioList] = useState([]);
 	const [subscription, setSubscription] = useState([]);
@@ -59,7 +61,11 @@ export default function Home() {
 		setAudioList(music);
 	};
 
-	const subscriptionHandle = (item) => {};
+	const subscriptionHandle = (item) => {
+		navigate("/subscription", {
+			state: item,
+		});
+	};
 
 	const createCustomMusic = {
 		title: (

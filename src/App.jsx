@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ToastContainer } from "react-toastify";
-import ContactUs from "./components/ContactUs";
 import Footer from "./components/Footer";
 import NavBar from "./components/NavBar";
 
@@ -20,16 +19,11 @@ export default function App({ children }) {
 		window.scrollTo({ top: 0, behavior: "smooth" });
 	};
 
-	const handleContactClick = () => {
-		if (contactFormRef.current) {
-			contactFormRef.current.scrollIntoView({ behavior: "smooth" });
-		}
-	};
 	return (
 		<>
-			<NavBar scrollY={scrollY} handleContactClick={handleContactClick} />
+			<NavBar scrollY={scrollY} />
 			{children}
-			<ContactUs ref={contactFormRef} />
+			{/* <ContactUs /> */}
 			<Footer />
 			<ToastContainer />
 			<button

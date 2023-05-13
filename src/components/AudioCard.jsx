@@ -1,6 +1,11 @@
+import { DownloadOutlined } from "@ant-design/icons";
+import { Button } from "antd";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { WaveForm, WaveSurfer } from "wavesurfer-react";
+import { isUserLogin } from "../utils/helper";
 export default function AudioCard({ id, title, description, audio, image }) {
+	const navigate = useNavigate();
 	const wavesurferRef = useRef();
 	const [currentTime, setCurrentTime] = useState(0);
 	const [isMuted, setIsMuted] = useState(false);
@@ -102,16 +107,20 @@ export default function AudioCard({ id, title, description, audio, image }) {
 	};
 
 	const handleDownload = (audioFile) => {
-		const downloadUrl = audioFile?.downloadPath;
-		const filename = String(title).toLocaleLowerCase().split(" ").join("-") + ".mp3";
-		if (!downloadUrl) {
-			console.error("Invalid download URL");
-			return;
+		if (isUserLogin()) {
+			const downloadUrl = audioFile?.downloadPath;
+			const filename = String(title).toLocaleLowerCase().split(" ").join("-") + ".mp3";
+			if (!downloadUrl) {
+				console.error("Invalid download URL");
+				return;
+			}
+			const link = document.createElement("a");
+			link.href = downloadUrl;
+			link.download = filename;
+			link.click();
+		} else {
+			navigate("/login");
 		}
-		const link = document.createElement("a");
-		link.href = downloadUrl;
-		link.download = filename;
-		link.click();
 	};
 
 	return (
@@ -164,7 +173,13 @@ export default function AudioCard({ id, title, description, audio, image }) {
 									onChange={handleVolumeChange}
 								/>
 							</div>
-							<button className="download" onClick={() => handleDownload(audio)} />
+
+							<Button
+								style={{ marginLeft: "10px" }}
+								onClick={() => handleDownload(audio)}
+								size="large"
+								icon={<DownloadOutlined style={{ fontSize: "15px" }} />}
+							/>
 						</div>
 					</div>
 				</div>

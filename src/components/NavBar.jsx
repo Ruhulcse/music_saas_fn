@@ -1,10 +1,12 @@
-import { Modal } from "antd";
+import { UserOutlined } from "@ant-design/icons";
+import { Button, Dropdown, Modal } from "antd";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import SubscriptionCard from "../components/SubscriptionCard";
 import { getPlan } from "../utils/apiCall";
 import ContactUs from "./ContactUs";
-export default function NavBar({ scrollY, handleContactClick }) {
+
+export default function NavBar({ scrollY }) {
 	const navigate = useNavigate();
 	const [isLogin, setIsLogin] = useState(false);
 	const [user, setUser] = useState({});
@@ -50,12 +52,36 @@ export default function NavBar({ scrollY, handleContactClick }) {
 		navigate("/login");
 	};
 
+	const items = [
+		{
+			key: "1",
+			label: <span onClick={logout}>Log Out</span>,
+		},
+	];
+
 	let navBae;
 	if (localStorage.getItem("user")) {
 		navBae = (
 			<>
-				<Link onClick={logout} className="aibeat-button">
-					logout
+				<Link
+					style={{
+						color: "white",
+						textDecoration: "none",
+						border: "none",
+					}}
+				>
+					<Dropdown
+						menu={{
+							items,
+						}}
+						placement="bottom"
+					>
+						<Button
+							shape="circle"
+							size="large"
+							icon={<UserOutlined style={{ fontSize: "25px" }} />}
+						/>
+					</Dropdown>
 				</Link>
 			</>
 		);

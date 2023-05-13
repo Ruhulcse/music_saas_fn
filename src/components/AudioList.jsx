@@ -50,20 +50,22 @@ export default function AudioList({ audioList }) {
 
 	return (
 		<section className="audio-section">
-			<InfiniteScroll
-				className="scrollbar-hidden"
-				dataLength={pagination.data.length}
-				next={handleChange}
-				hasMore={pagination.hasMore}
-				height={500}
-				endMessage={
-					<p style={{ textAlign: "center", color: "white" }}>
-						<b>Yay! You have seen it all</b>
-					</p>
-				}
-			>
-				{audioContent}
-			</InfiniteScroll>
+			{pagination.data.length > 0 && (
+				<InfiniteScroll
+					className="scrollbar-hidden"
+					dataLength={pagination.data.length}
+					next={handleChange}
+					hasMore={pagination.hasMore}
+					height={500}
+					endMessage={
+						<p style={{ textAlign: "center", color: "white" }}>
+							<b>Yay! You have seen it all</b>
+						</p>
+					}
+				>
+					{audioContent}
+				</InfiniteScroll>
+			)}
 		</section>
 	);
 }
