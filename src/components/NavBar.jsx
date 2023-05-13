@@ -3,11 +3,13 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import SubscriptionCard from "../components/SubscriptionCard";
 import { getPlan } from "../utils/apiCall";
-export default function NavBar({ scrollY }) {
+import ContactUs from "./ContactUs";
+export default function NavBar({ scrollY, handleContactClick }) {
 	const navigate = useNavigate();
 	const [isLogin, setIsLogin] = useState(false);
 	const [user, setUser] = useState({});
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isModalOpenForContactUs, setIsModalOpenForContactUs] = useState(false);
 	const [subscription, setSubscription] = useState([]);
 	const showModal = () => {
 		setIsModalOpen(true);
@@ -19,6 +21,17 @@ export default function NavBar({ scrollY }) {
 
 	const handleCancel = () => {
 		setIsModalOpen(false);
+	};
+	const showModalForContactUs = () => {
+		setIsModalOpenForContactUs(true);
+	};
+
+	const handleOkForContactUs = () => {
+		setIsModalOpenForContactUs(false);
+	};
+
+	const handleCancelForContactUs = () => {
+		setIsModalOpenForContactUs(false);
 	};
 	useEffect(() => {
 		const userInfo = localStorage.getItem("user");
@@ -74,7 +87,7 @@ export default function NavBar({ scrollY }) {
 						</div>
 						<div className="header-button">
 							<Link
-								to="/"
+								onClick={showModalForContactUs}
 								className="aibeat-button"
 								style={{ margin: "0px 10px 0px 10px" }}
 							>
@@ -97,9 +110,18 @@ export default function NavBar({ scrollY }) {
 				open={isModalOpen}
 				onOk={handleOk}
 				onCancel={handleCancel}
-				width={"90%"}
+				width={"95%"}
 			>
 				<SubscriptionCard subscription={subscription} />
+			</Modal>
+			<Modal
+				title="Contact Us"
+				open={isModalOpenForContactUs}
+				onOk={handleOkForContactUs}
+				onCancel={handleCancelForContactUs}
+				width={"70%"}
+			>
+				<ContactUs />
 			</Modal>
 		</header>
 	);

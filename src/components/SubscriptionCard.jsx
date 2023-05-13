@@ -3,7 +3,7 @@ import React from "react";
 export default function SubscriptionCard({ subscription, subscriptionHandle }) {
 	const subscriptionContent = subscription?.map((item) => (
 		<div key={item?._id} className="wrapper">
-			<div className="table basic">
+			<div className="table basic" style={{ backgroundColor: "#f1f1f1" }}>
 				<div>
 					<div className="aj_p">{item?.name}</div>
 				</div>

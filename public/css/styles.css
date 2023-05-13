@@ -1280,13 +1280,9 @@ font-family: 'Gilroy-bold',sans-serif;
 .waveSurfer__wave {
 	width: 30%;
 	height: 80px;
-	border-radius: 10px;
-	display: flex;
-	text-align: center;
-	justify-content: space-between;
-	align-items: center;
 	margin: 0px 20px;
 }
+
 .audio-info {
 	display: flex;
 	justify-content: space-between;
@@ -1596,4 +1592,17 @@ table .ribbon::after {
 
 .ant-modal-content {
 	background-color: #1b2d3b;
+}
+canvas {
+	margin-bottom: -100%;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+	display: none;
+}
+
+/* Hide scrollbar for IE, Edge add Firefox */
+.scrollbar-hidden {
+	-ms-overflow-style: none;
+	scrollbar-width: none; /* Firefox */
 }

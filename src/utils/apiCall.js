@@ -33,3 +33,8 @@ export const loginFun = async (body) => {
 
 	return res;
 };
+
+export const contactUs = async (body) => {
+	const res = await axiosServices.post(`/contactus`, body);
+	return res;
+};

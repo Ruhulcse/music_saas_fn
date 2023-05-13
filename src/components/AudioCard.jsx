@@ -114,10 +114,6 @@ export default function AudioCard({ id, title, description, audio, image }) {
 		link.click();
 	};
 
-	const allWeb = document.getElementsByTagName("wave");
-
-	console.log("wave", allWeb);
-
 	return (
 		<div className="row" style={{ marginBottom: 20 }}>
 			<div className="container">
@@ -136,21 +132,16 @@ export default function AudioCard({ id, title, description, audio, image }) {
 						</div>
 
 						<div className={"waveSurfer__wave " + id}>
-							<WaveSurfer
-								key={id}
-								ref={wavesurferRef}
-								plugins={plugins}
-								onMount={handleWSMount}
-							>
-								<span id={id}></span>
+							<WaveSurfer key={id} plugins={plugins} onMount={handleWSMount}>
 								<WaveForm
-									id={`waveform`}
-									autoCenterImmediately
-									autoCenter
+									id={`waveform${id}`}
+									className="waveform"
 									progressColor={"#3b0264"}
-									hideCursor
 									height={50}
-								></WaveForm>
+									hideCursor={true}
+								>
+									<canvas ref={wavesurferRef} />
+								</WaveForm>
 							</WaveSurfer>
 						</div>
 						<div className="audio-info-right">

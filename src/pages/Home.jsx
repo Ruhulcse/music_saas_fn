@@ -37,7 +37,9 @@ export default function Home() {
 			const music = await get_music(search);
 			setAudioList(music);
 		};
-		init();
+		if (search) {
+			init();
+		}
 	}, [search]);
 
 	useEffect(() => {

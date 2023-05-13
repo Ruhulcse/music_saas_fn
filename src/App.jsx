@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ToastContainer } from "react-toastify";
+import ContactUs from "./components/ContactUs";
 import Footer from "./components/Footer";
 import NavBar from "./components/NavBar";
 
@@ -26,8 +27,9 @@ export default function App({ children }) {
 	};
 	return (
 		<>
-			<NavBar scrollY={scrollY} />
+			<NavBar scrollY={scrollY} handleContactClick={handleContactClick} />
 			{children}
+			<ContactUs ref={contactFormRef} />
 			<Footer />
 			<ToastContainer />
 			<button
