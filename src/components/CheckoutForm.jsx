@@ -1,4 +1,4 @@
-import { CardElement, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosServices from "../utils/axiosServices";
@@ -25,7 +25,8 @@ export default function CheckoutForm() {
 				},
 			});
 
-			console.log("paymentMethod", paymentMethod);
+			console.log("paymentMethod error", paymentMethod?.error);
+			console.log("paymentMethod", paymentMethod?.paymentMethod);
 
 			// call the backend to create subscription
 			const response = await axiosServices.post("/create_subscription", {
@@ -35,7 +36,9 @@ export default function CheckoutForm() {
 				priceId,
 			});
 
-			const confirmPayment = await stripe?.confirmCardPayment(response.data.clientSecret);
+			const confirmPayment = await stripe?.confirmCardPayment(
+				response.data.data.clientSecret,
+			);
 
 			if (confirmPayment?.error) {
 				alert(confirmPayment.error.message);
@@ -49,10 +52,12 @@ export default function CheckoutForm() {
 
 	useEffect(() => {
 		const user = JSON.parse(localStorage.getItem("user"));
+		const item = JSON.parse(localStorage.getItem("item"));
 
-		if (user) {
+		if (user && item) {
 			setEmail(user.email);
 			setName(user.name);
+			setPriceId(item.api_id);
 		} else {
 			navigate("/login");
 		}
@@ -60,10 +65,10 @@ export default function CheckoutForm() {
 
 	return (
 		<div style={{ width: "100%" }}>
-			<PaymentElement />
+			<CardElement />
 
 			<button onClick={createSubscription} disabled={!stripe}>
-				Subscribe
+				Submit
 			</button>
 		</div>
 	);
