@@ -1,53 +1,83 @@
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 // import "../static/css/index.css";
-import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 import CheckoutForm from "./CheckoutForm";
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
 const ReactStrip = () => {
-	const location = useLocation();
+	const [options, setOptions] = useState();
+	const [item, setItem] = useState();
 
-	console.log({ location });
+	useEffect(() => {
+		if (localStorage.getItem("item")) {
+			const itemData = JSON.parse(localStorage.getItem("item"));
+			setItem(itemData);
 
-	const options = {
-		mode: "payment",
-		amount: 20,
-		currency: "usd",
-	};
+			setOptions({
+				mode: "payment",
+				amount: 50,
+				currency: "usd",
+			});
+		}
+	}, []);
+
 	return (
-		<section>
+		<section style={{ height: "100vh", display: "flex" }}>
 			<div
-				style={{ height: "70vh", backgroundColor: "white", padding: "40px" }}
 				className="banner-main-container colamu-6"
+				style={{
+					backgroundColor: "white",
+					padding: 25,
+					margin: 25,
+					borderRadius: 20,
+					display: "flex",
+				}}
 			>
-				<div key={location.state?._id} className="wrapper">
-					<div className="table basic" style={{ backgroundColor: "#f1f1f1" }}>
-						<div>
-							<div className="aj_p">{location.state?.name}</div>
-						</div>
-						<div>
-							<p>{location.state?.description}</p>
-						</div>
-						<div className="price-section">
-							<div className="price-area">
-								<div className="inner-area">
-									<span className="price">${location.state?.price}</span>
+				{item && (
+					<div key={item?._id} className="wrapper">
+						<div
+							className="table basic"
+							style={{ backgroundColor: "#f1f1f1", padding: 30 }}
+						>
+							<div>
+								<div className="aj_p">{item?.name}</div>
+							</div>
+							<div>
+								<p>{item?.description}</p>
+							</div>
+							<div className="price-section">
+								<div className="price-area">
+									<div className="inner-area">
+										<span className="price">${item?.price}</span>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+				)}
 			</div>
 			<div
-				style={{ height: "70vh", backgroundColor: "white", padding: "40px" }}
 				className="banner-main-container colamu-6"
+				style={{
+					backgroundColor: "white",
+					padding: 25,
+					margin: 25,
+					borderRadius: 20,
+					display: "flex",
+					alignItems: "center",
+					justifyContent: "center",
+				}}
 			>
-				<Elements stripe={stripePromise} options={options}>
-					<CheckoutForm />
-				</Elements>
+				{options && (
+					<div style={{ width: "100%" }}>
+						<Elements stripe={stripePromise} options={options}>
+							<CheckoutForm />
+						</Elements>
+					</div>
+				)}
 			</div>
 		</section>
 	);
