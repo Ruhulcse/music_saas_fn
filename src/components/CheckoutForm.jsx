@@ -1,6 +1,7 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import axiosServices from "../utils/axiosServices";
 export default function CheckoutForm() {
 	// collect data from the user
@@ -41,12 +42,12 @@ export default function CheckoutForm() {
 			);
 
 			if (confirmPayment?.error) {
-				alert(confirmPayment.error.message);
+				toast(confirmPayment.error.message);
 			} else {
-				alert("Success! Check your email for the invoice.");
+				toast("Success! Check your email for the invoice.");
 			}
 		} catch (error) {
-			console.log(error);
+			toast(error.message);
 		}
 	};
 
