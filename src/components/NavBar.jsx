@@ -101,6 +101,13 @@ export default function NavBar({ scrollY }) {
 		init();
 	}, []);
 
+	const subscriptionHandle = (item) => {
+		localStorage.removeItem("item");
+		localStorage.setItem("item", JSON.stringify(item));
+		handleCancel();
+		navigate("/subscription");
+	};
+
 	return (
 		<header id="header" className={`${scrollY >= 80 ? "fixed" : ""}`}>
 			<div className="row ">
@@ -138,7 +145,10 @@ export default function NavBar({ scrollY }) {
 				onCancel={handleCancel}
 				width={"95%"}
 			>
-				<SubscriptionCard subscription={subscription} />
+				<SubscriptionCard
+					subscription={subscription}
+					subscriptionHandle={subscriptionHandle}
+				/>
 			</Modal>
 			<Modal
 				title="Contact Us"

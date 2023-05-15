@@ -39,8 +39,8 @@ const Signup = () => {
 	};
 
 	return (
-		<div style={{ height: "100vh" }}>
-			<section className="banner-section">
+		<div>
+			<section className="banner-section" style={{ height: "100vh" }}>
 				<div className="row">
 					<div
 						className="container"

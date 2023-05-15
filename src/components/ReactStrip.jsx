@@ -73,7 +73,7 @@ const ReactStrip = () => {
 			>
 				{options && (
 					<div style={{ width: "100%" }}>
-						<Elements stripe={stripePromise} options={options}>
+						<Elements stripe={stripePromise}>
 							<CheckoutForm />
 						</Elements>
 					</div>
