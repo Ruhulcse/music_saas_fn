@@ -1,29 +1,39 @@
 import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
 // import "../static/css/index.css";
+import { loadStripe } from "@stripe/stripe-js";
 import { useEffect, useState } from "react";
 import CheckoutForm from "./CheckoutForm";
-// Make sure to call `loadStripe` outside of a component’s render to avoid
-// recreating the `Stripe` object on every render.
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
 const ReactStrip = () => {
-	const [options, setOptions] = useState();
 	const [item, setItem] = useState();
 
 	useEffect(() => {
 		if (localStorage.getItem("item")) {
 			const itemData = JSON.parse(localStorage.getItem("item"));
 			setItem(itemData);
-
-			setOptions({
-				mode: "payment",
-				amount: 50,
-				currency: "usd",
-			});
 		}
 	}, []);
 
+	const appearance = {
+		theme: "stripe",
+
+		variables: {
+			colorPrimary: "#0570de",
+			colorBackground: "#ffffff",
+			colorText: "#30313d",
+			colorDanger: "#df1b41",
+			fontFamily: "Ideal Sans, system-ui, sans-serif",
+			spacingUnit: "2px",
+			borderRadius: "4px",
+			// See all possible variables below
+		},
+	};
+	const options = {
+		// clientSecret,
+		appearance,
+	};
+	// const elements = stripe.elements({ clientSecret, appearance });
 	return (
 		<section style={{ height: "100vh", display: "flex" }}>
 			<div
@@ -71,13 +81,11 @@ const ReactStrip = () => {
 					justifyContent: "center",
 				}}
 			>
-				{options && (
-					<div style={{ width: "100%" }}>
-						<Elements stripe={stripePromise}>
-							<CheckoutForm />
-						</Elements>
-					</div>
-				)}
+				<div style={{ width: "100%" }}>
+					<Elements stripe={stripePromise} options={options}>
+						<CheckoutForm />
+					</Elements>
+				</div>
 			</div>
 		</section>
 	);
