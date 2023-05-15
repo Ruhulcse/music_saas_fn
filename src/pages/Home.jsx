@@ -41,6 +41,8 @@ export default function Home() {
 		};
 		if (search) {
 			init();
+		} else {
+			setAudioList([]);
 		}
 	}, [search]);
 

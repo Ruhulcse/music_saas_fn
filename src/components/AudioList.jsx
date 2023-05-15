@@ -11,7 +11,6 @@ export default function AudioList({ audioList }) {
 	});
 
 	const handleChange = () => {
-		console.log("00000000000000000000000", audioList.length <= pagination.data.length);
 		if (audioList.length <= pagination.data.length) {
 			setPagination((prev) => ({
 				...prev,
@@ -34,6 +33,12 @@ export default function AudioList({ audioList }) {
 				...prev,
 				total: audioList.length,
 				data: [...audioList.slice(0, prev.max)],
+			}));
+		} else {
+			setPagination((prev) => ({
+				...prev,
+				total: audioList.length,
+				data: [],
 			}));
 		}
 	}, [audioList]);
