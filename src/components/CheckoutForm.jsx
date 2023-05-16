@@ -8,26 +8,12 @@ import {
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { styled } from "styled-components";
+import { ReactComponent as Generic } from "../static/images/generic.svg";
+import { ReactComponent as Mastercard } from "../static/images/mastercard.svg";
+import { ReactComponent as Paypal } from "../static/images/paypal.svg";
+import { ReactComponent as Visa } from "../static/images/visa.svg";
 import axiosServices from "../utils/axiosServices";
-const CARD_OPTIONS = {
-	iconStyle: "solid",
-	style: {
-		base: {
-			iconColor: "#c4f0ff",
-			color: "black",
-			fontWeight: 500,
-			fontFamily: "Roboto, Open Sans, Segoe UI, sans-serif",
-			fontSize: "16px",
-			fontSmoothing: "antialiased",
-			":-webkit-autofill": { color: "black" },
-			"::placeholder": { color: "black" },
-		},
-		invalid: {
-			iconColor: "#ffc7ee",
-			color: "black",
-		},
-	},
-};
 export default function CheckoutForm() {
 	// collect data from the user
 	const [name, setName] = useState("");
@@ -42,7 +28,7 @@ export default function CheckoutForm() {
 	const createSubscription = async (e) => {
 		e.preventDefault();
 		try {
-			// // create a payment method
+			// create a payment method
 			const paymentMethod = await stripe?.createPaymentMethod({
 				type: "card",
 				card: elements?.getElement(CardCvcElement, CardExpiryElement, CardNumberElement),
@@ -52,10 +38,12 @@ export default function CheckoutForm() {
 				},
 			});
 
-			// console.log("paymentMethod error", paymentMethod?.error);
-			// console.log("paymentMethod", paymentMethod?.paymentMethod);
+			if (!stripe || !elements) {
+				// Stripe.js hasn't yet loaded.
+				// Make sure to disable form submission until Stripe.js has loaded.
+				return;
+			}
 
-			// call the backend to create subscription
 			const response = await axiosServices.post("/create_subscription", {
 				paymentMethod: paymentMethod?.paymentMethod?.id,
 				name,
@@ -63,21 +51,13 @@ export default function CheckoutForm() {
 				priceId,
 			});
 
-			if (!stripe || !elements) {
-				// Stripe.js hasn't yet loaded.
-				// Make sure to disable form submission until Stripe.js has loaded.
-				return;
-			}
-
-			const { error } = await stripe.confirmPayment({
-				elements,
-				confirmParams: {
-					// Make sure to change this to your payment completion page
-					return_url: "http://localhost:3000",
-				},
-			});
-			if (error) {
+			const confirmPayment = await stripe?.confirmCardPayment(
+				response.data.data.clientSecret,
+			);
+			if (confirmPayment?.error) {
 				toast("Something wrong. Please try again.");
+			} else {
+				toast("Subscription Successful.");
 			}
 		} catch (error) {
 			toast(error.message);
@@ -97,48 +77,149 @@ export default function CheckoutForm() {
 		}
 	}, []);
 
+	const handleChange = (e) => {};
+
 	return (
 		<div style={{ width: "100%" }}>
+			<div
+				style={{
+					marginBottom: 20,
+					display: "flex",
+					alignItems: "center",
+					padding: "10px 15px",
+					backgroundColor: "#f1f1f1",
+					width: "25%",
+					borderRadius: 10,
+					cursor: "pointer",
+				}}
+			>
+				<span style={{ fontSize: 25, fontWeight: 500 }}>Card</span>
+
+				<Generic style={{ width: "50%", marginLeft: 10 }} />
+			</div>
+
 			<form onSubmit={createSubscription}>
-				{/* <LinkAuthenticationElement  onChange={(e) => setEmail(e.target.value)} /> */}
-				Or
+				<div style={{ margin: "0px 0px 5px 15px" }}>Email</div>
+				<EmailWrapper>
+					<input
+						style={{
+							margin: 0,
+							padding: 0,
+							border: "none",
+							color: "gray",
+							backgroundColor: "transparent",
+						}}
+						type="email"
+						name="email"
+						placeholder="Email"
+						onChange={handleChange}
+					/>
+				</EmailWrapper>
 				<br />
-				<br />
-				{/* <PaymentElement /> */}
-				{/* <CardElement
-					id="card-element"
-					options={{
-						style: {
-							base: {
-								fontSize: "16px",
-								color: "#424770",
-								"::placeholder": {
-									color: "#aab7c4",
-								},
-							},
-							invalid: {
-								color: "#9e2146",
-							},
-						},
+
+				<div
+					style={{
+						margin: "0px 0px 5px 15px",
+						display: "flex",
+						justifyContent: "space-between",
+						alignItems: "center",
 					}}
-				/> */}
-				<fieldset className="FormGroup">
-					<div className="FormRow">
-						<CardNumberElement />
+				>
+					<div style={{ width: "50%" }}>Card Number</div>
+					<div style={{ textAlign: "end", width: "50%" }}>
+						<Visa style={{ width: "10%", margin: "0px 3px 0px 3px" }} />
+						<Mastercard style={{ width: "10%", margin: "0px 3px 0px 3px" }} />
+						<Paypal style={{ width: "10%", margin: "0px 30px 0px 3px" }} />
 					</div>
-				</fieldset>
-				<fieldset className="FormGroup">
-					<div className="FormRow">
-						<CardExpiryElement />
+				</div>
+				<CardInputWrapper>
+					<CardNumberElement
+						options={{
+							style: {
+								base: inputStyle,
+							},
+						}}
+					/>
+				</CardInputWrapper>
+				<br />
+
+				<div
+					style={{
+						display: "flex",
+						justifyContent: "space-between",
+						alignItems: "center",
+					}}
+				>
+					<div style={{ width: "100%" }}>
+						<div style={{ margin: "0px 0px 5px 15px" }}>MM / YY</div>
+						<CardExpiryElementWrapper>
+							<CardExpiryElement
+								options={{
+									style: {
+										base: inputStyle,
+									},
+								}}
+							/>
+						</CardExpiryElementWrapper>
 					</div>
-				</fieldset>
-				<fieldset className="FormGroup">
-					<div className="FormRow">
-						<CardCvcElement />
+					<div style={{ width: "100%" }}>
+						<div style={{ margin: "0px 0px 5px 15px" }}>CVC</div>
+						<CardCvcElementWrapper>
+							<CardCvcElement
+								options={{
+									style: {
+										base: inputStyle,
+									},
+								}}
+							/>
+						</CardCvcElementWrapper>
 					</div>
-				</fieldset>
+				</div>
+				<br />
+
 				<button disabled={!stripe}>Submit</button>
 			</form>
 		</div>
 	);
 }
+
+const EmailWrapper = styled.div`
+	border: 1px solid gray;
+	border-radius: 25px;
+	padding: 0px 15px;
+	color: gray;
+	fontweight: 500;
+`;
+const CardInputWrapper = styled.div`
+	border: 1px solid gray;
+	border-radius: 25px;
+	padding: 15px 15px;
+`;
+
+const CardExpiryElementWrapper = styled.div`
+	border: 1px solid gray;
+	border-radius: 25px;
+	padding: 15px 15px;
+	margin: 0px 5px 0px 0px;
+`;
+const CardCvcElementWrapper = styled.div`
+	border: 1px solid gray;
+	border-radius: 25px;
+	padding: 15px 15px;
+	margin: 0px 0px 0px 5px;
+`;
+const inputStyle = {
+	showIcon: true,
+	color: "gray",
+	fontWeight: "500",
+	fontFamily: "Roboto, Open Sans, Segoe UI, sans-serif",
+	fontSize: "16px",
+	fontSmoothing: "antialiased",
+	":-webkit-autofill": {
+		color: "red",
+		backgroundColor: "transparent",
+	},
+	"::placeholder": {
+		color: "gray",
+	},
+};

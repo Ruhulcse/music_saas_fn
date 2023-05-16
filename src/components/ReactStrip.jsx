@@ -1,5 +1,4 @@
 import { Elements } from "@stripe/react-stripe-js";
-// import "../static/css/index.css";
 import { loadStripe } from "@stripe/stripe-js";
 import { useEffect, useState } from "react";
 import CheckoutForm from "./CheckoutForm";
@@ -15,25 +14,6 @@ const ReactStrip = () => {
 		}
 	}, []);
 
-	const appearance = {
-		theme: "stripe",
-
-		variables: {
-			colorPrimary: "#0570de",
-			colorBackground: "#ffffff",
-			colorText: "#30313d",
-			colorDanger: "#df1b41",
-			fontFamily: "Ideal Sans, system-ui, sans-serif",
-			spacingUnit: "2px",
-			borderRadius: "4px",
-			// See all possible variables below
-		},
-	};
-	const options = {
-		// clientSecret,
-		appearance,
-	};
-	// const elements = stripe.elements({ clientSecret, appearance });
 	return (
 		<section style={{ height: "100vh", display: "flex" }}>
 			<div
@@ -73,16 +53,16 @@ const ReactStrip = () => {
 				className="banner-main-container colamu-6"
 				style={{
 					backgroundColor: "white",
-					padding: 25,
+					padding: "30px",
 					margin: 25,
 					borderRadius: 20,
 					display: "flex",
-					alignItems: "center",
+					// alignItems: "center",
 					justifyContent: "center",
 				}}
 			>
 				<div style={{ width: "100%" }}>
-					<Elements stripe={stripePromise} options={options}>
+					<Elements stripe={stripePromise}>
 						<CheckoutForm />
 					</Elements>
 				</div>
