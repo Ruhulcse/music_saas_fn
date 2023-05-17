@@ -1606,7 +1606,3 @@ canvas {
 	-ms-overflow-style: none;
 	scrollbar-width: none; /* Firefox */
 }
-
-.StripeElement {
-	margin-bottom: 20px;
-}

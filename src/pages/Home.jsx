@@ -41,6 +41,8 @@ export default function Home() {
 		};
 		if (search) {
 			init();
+		} else {
+			setAudioList([]);
 		}
 	}, [search]);
 
@@ -62,9 +64,9 @@ export default function Home() {
 	};
 
 	const subscriptionHandle = (item) => {
-		navigate("/subscription", {
-			state: item,
-		});
+		localStorage.removeItem("item");
+		localStorage.setItem("item", JSON.stringify(item));
+		navigate("/subscription");
 	};
 
 	const createCustomMusic = {

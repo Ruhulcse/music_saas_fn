@@ -22,6 +22,7 @@ export default function ErrorPage() {
 				<FillButton
 					onClick={() => {
 						navigate("/", { replace: true });
+						window.location.reload();
 					}}
 				>
 					HOME
