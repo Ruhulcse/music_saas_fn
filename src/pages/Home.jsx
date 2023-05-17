@@ -34,17 +34,17 @@ export default function Home() {
 	const [audioList, setAudioList] = useState([]);
 	const [subscription, setSubscription] = useState([]);
 
-	useEffect(() => {
-		const init = async () => {
-			const music = await get_music(search);
-			setAudioList(music);
-		};
-		if (search) {
-			init();
-		} else {
-			setAudioList([]);
-		}
-	}, [search]);
+	// useEffect(() => {
+	// 	const init = async () => {
+	// 		const music = await get_music(search);
+	// 		setAudioList(music);
+	// 	};
+	// 	if (search) {
+	// 		init();
+	// 	} else {
+	// 		setAudioList([]);
+	// 	}
+	// }, [search]);
 
 	useEffect(() => {
 		const init = async () => {

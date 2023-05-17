@@ -4,6 +4,7 @@ export const get_music = async (search) => {
 	const res = await axiosServices.get(`/get_music?q=${search}`);
 	const mapData = res.data?.data?.tracks?.map((el) => ({
 		id: el?.id,
+		isPlaying: false,
 		title: el?.name,
 		description: el?.Artist?.name,
 		image: {

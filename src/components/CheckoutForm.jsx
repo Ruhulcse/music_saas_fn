@@ -44,6 +44,8 @@ export default function CheckoutForm() {
 				return;
 			}
 
+			console.log({ name });
+
 			const response = await axiosServices.post("/create_subscription", {
 				paymentMethod: paymentMethod?.paymentMethod?.id,
 				name,
@@ -77,7 +79,10 @@ export default function CheckoutForm() {
 		}
 	}, []);
 
-	const handleChange = (e) => {};
+	const handleChange = (e) => {
+		const { value } = e.target;
+		setEmail(value);
+	};
 
 	return (
 		<div style={{ width: "100%" }}>
@@ -176,8 +181,11 @@ export default function CheckoutForm() {
 					</div>
 				</div>
 				<br />
-
-				<button disabled={!stripe}>Submit</button>
+				<div style={{ textAlign: "center" }}>
+					<button type="submit" disabled={!stripe}>
+						Pay
+					</button>
+				</div>
 			</form>
 		</div>
 	);
@@ -189,11 +197,36 @@ const EmailWrapper = styled.div`
 	padding: 0px 15px;
 	color: gray;
 	fontweight: 500;
+	input:-internal-autofill-selected,
+	input:-webkit-autofill,
+	input:-webkit-autofill:hover,
+	input:-webkit-autofill:focus,
+	input:-webkit-autofill:active,
+	textarea:-webkit-autofill,
+	textarea:-webkit-autofill:hover,
+	textarea:-webkit-autofill:focus,
+	textarea:-webkit-autofill:active,
+	select:-webkit-autofill,
+	select:-webkit-autofill:hover,
+	select:-webkit-autofill:focus,
+	select:-webkit-autofill:active {
+		-webkit-box-shadow: 0 0 0 1000px white inset !important;
+		-webkit-background-clip: text !important;
+		-webkit-text-fill-color: gray;
+	}
+	input::selection {
+		background-color: #8ab4f8;
+		color: white;
+	}
 `;
 const CardInputWrapper = styled.div`
 	border: 1px solid gray;
 	border-radius: 25px;
 	padding: 15px 15px;
+	input::selection {
+		background-color: #8ab4f8;
+		color: white;
+	}
 `;
 
 const CardExpiryElementWrapper = styled.div`
@@ -201,13 +234,22 @@ const CardExpiryElementWrapper = styled.div`
 	border-radius: 25px;
 	padding: 15px 15px;
 	margin: 0px 5px 0px 0px;
+	input::selection {
+		background-color: #8ab4f8;
+		color: white;
+	}
 `;
 const CardCvcElementWrapper = styled.div`
 	border: 1px solid gray;
 	border-radius: 25px;
 	padding: 15px 15px;
 	margin: 0px 0px 0px 5px;
+	input::selection {
+		background-color: #8ab4f8;
+		color: white;
+	}
 `;
+
 const inputStyle = {
 	showIcon: true,
 	color: "gray",
