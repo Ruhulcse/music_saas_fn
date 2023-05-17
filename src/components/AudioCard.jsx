@@ -152,7 +152,7 @@ export default function AudioCard({
 									height={50}
 									hideCursor={true}
 								>
-									<canvas ref={wavesurferRef} />
+									<canvas ref={wavesurferRefs} />
 								</WaveForm>
 							</WaveSurfer>
 						</div>

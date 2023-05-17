@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { createRef, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AboutSection from "../components/AboutSection";
 import AudioList from "../components/AudioList";
@@ -60,7 +60,8 @@ export default function Home() {
 	const onSearchHandlerSubmit = async (e) => {
 		e.preventDefault();
 		const music = await get_music(search);
-		setAudioList(music);
+		const makeData = music.map((el) => ({ ...el, wavesurferRef: createRef() }));
+		setAudioList(makeData);
 	};
 
 	const subscriptionHandle = (item) => {
@@ -316,7 +317,7 @@ export default function Home() {
 	return (
 		<main>
 			<BannerSection createCustomMusic={createCustomMusic} searchYourBeat={searchYourBeat} />
-			<AudioList audioList={audioList} />
+			<AudioList audioList={audioList} setAudioList={setAudioList} />
 			<LogoSection logoSection={logoSection} />
 			<AboutSection {...aboutSection} />
 			<SubscriptionCard subscription={subscription} subscriptionHandle={subscriptionHandle} />

@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useRef, useMemo, useCallback, createRef } from "react";
+import React, { useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import AudioCard from "./AudioCard";
 
-export default function AudioList({ audioList }) {
+export default function AudioList({ audioList, setAudioList }) {
 	const [pagination, setPagination] = useState({
 		data: [],
 		hasMore: true,
@@ -28,29 +28,10 @@ export default function AudioList({ audioList }) {
 			}, 500);
 		}
 	};
-	useEffect(() => {
-		if (audioList.length) {
-			setPagination((prev) => ({
-				...prev,
-				total: audioList.length,
-				data: [...audioList.slice(0, prev.max)].map((el) => ({
-					...el,
-					wavesurferRef: createRef(),
-				})),
-			}));
-		} else {
-			setPagination((prev) => ({
-				...prev,
-				total: audioList.length,
-				data: [],
-			}));
-		}
-	}, [audioList]);
 
 	const handleHasPlaying = (id, isPlay) => {
-		setPagination((prev) => ({
-			...prev,
-			data: prev.data.map((el) => {
+		setAudioList((prev) =>
+			prev.map((el) => {
 				if (el.id === id) {
 					if (el.wavesurferRef.current.isPlaying()) {
 						el.wavesurferRef.current.pause();
@@ -65,24 +46,23 @@ export default function AudioList({ audioList }) {
 				}
 				return el;
 			}),
-		}));
+		);
 	};
 
 	const onChange = (id, value) => {
-		setPagination((prev) => ({
-			...prev,
-			data: prev.data.map((el) => {
+		setAudioList((prev) =>
+			prev.map((el) => {
 				if (el.id === id) {
 					el.wavesurferRef.current = value;
 				}
 				return el;
 			}),
-		}));
+		);
 	};
 
 	let audioContent;
-	if (Array.isArray(pagination.data) && pagination.data?.length > 0) {
-		audioContent = pagination.data.map((audio, i) => (
+	if (Array.isArray(audioList) && audioList?.length > 0) {
+		audioContent = audioList.map((audio, i) => (
 			<div key={audio?.id} id={audio?.id}>
 				<AudioCard
 					{...audio}
@@ -97,12 +77,12 @@ export default function AudioList({ audioList }) {
 
 	return (
 		<section className="audio-section">
-			{pagination.data.length > 0 && (
+			{audioList.length > 0 && (
 				<InfiniteScroll
 					className="scrollbar-hidden"
-					dataLength={pagination.data.length}
+					dataLength={audioList.length}
 					next={handleChange}
-					hasMore={pagination.hasMore}
+					hasMore={false}
 					height={500}
 					endMessage={
 						<p style={{ textAlign: "center", color: "white" }}>
