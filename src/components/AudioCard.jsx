@@ -1,59 +1,30 @@
 import { DownloadOutlined } from "@ant-design/icons";
 import { Button } from "antd";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { WaveForm, WaveSurfer } from "wavesurfer-react";
 import { isUserLogin } from "../utils/helper";
-export default function AudioCard({ id, title, description, audio, image }) {
+export default function AudioCard({
+	id,
+	isPlaying,
+	title,
+	description,
+	audio,
+	image,
+	handleHasPlaying,
+	isAudioProcess,
+	setIsAudioProcess,
+	wavesurferRef,
+	onChange,
+}) {
 	const navigate = useNavigate();
-	const wavesurferRef = useRef();
+	const wavesurferRefs = useRef();
 	const [currentTime, setCurrentTime] = useState(0);
 	const [isMuted, setIsMuted] = useState(false);
-	const [isPlay, setIsPlay] = useState(false);
 	const [totalDuration, setTotalDuration] = useState("");
 	const [volume, setVolume] = useState(1);
-
-	const plugins = useMemo(() => {
-		return [].filter(Boolean);
-	}, []);
-
-	const handleWSMount = useCallback(
-		(waveSurfer) => {
-			if (waveSurfer.markers) {
-				waveSurfer.clearMarkers();
-			}
-
-			wavesurferRef.current = waveSurfer;
-
-			if (wavesurferRef.current) {
-				wavesurferRef.current.load(audio?.audioUrl, null, "auto");
-
-				wavesurferRef.current.on("ready", () => {
-					const durationInSeconds = wavesurferRef.current.getDuration();
-
-					// Convert duration to minutes and seconds
-					const minutes = Math.floor(durationInSeconds / 60);
-					const seconds = Math.floor(durationInSeconds % 60);
-
-					// Format the duration as "mm:ss"
-					const formattedDuration = `${minutes}:${seconds.toString().padStart(2, "0")}`;
-
-					// Update the state with the formatted duration
-					setTotalDuration(formattedDuration);
-				});
-			}
-		},
-		[audio?.audioUrl],
-	);
-
-	const play = useCallback(() => {
-		wavesurferRef.current.playPause();
-		const playing = wavesurferRef.current.isPlaying();
-		handleIsPlaying(playing);
-	}, []);
-
 	const handleToggleMute = () => {
-		const wavesurfer = wavesurferRef.current;
+		const wavesurfer = wavesurferRefs.current;
 		const muted = wavesurfer.getMute();
 
 		// Toggle mute status
@@ -64,34 +35,12 @@ export default function AudioCard({ id, title, description, audio, image }) {
 	const handleVolumeChange = (event) => {
 		setVolume(event.target.value);
 		const volume = parseFloat(event.target.value);
-		wavesurferRef.current.setVolume(volume);
+		wavesurferRefs.current.setVolume(volume);
 	};
-
-	const handleIsPlaying = (playing) => {
-		setIsPlay(playing);
-	};
-
-	useEffect(() => {
-		const wavesurfer = wavesurferRef.current;
-		if (wavesurfer) {
-			// Get initial mute status and volume
-			setIsMuted(wavesurfer.getMute());
-			// setVolume(wavesurfer.getVolume());
-
-			wavesurfer.on("finish", handleFinish);
-
-			wavesurfer.on("audioprocess", handleTimeUpdate);
-		}
-
-		return () => {
-			wavesurfer.un("finish", handleFinish);
-			wavesurfer.un("audioprocess", handleTimeUpdate);
-			wavesurfer.destroy();
-		};
-	}, []);
 
 	const handleTimeUpdate = () => {
-		const wavesurfer = wavesurferRef.current;
+		setIsAudioProcess(true);
+		const wavesurfer = wavesurferRefs.current;
 		const time = wavesurfer.getCurrentTime();
 		setCurrentTime(time);
 	};
@@ -102,9 +51,50 @@ export default function AudioCard({ id, title, description, audio, image }) {
 		return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
 	};
 
-	const handleFinish = () => {
-		setIsPlay(false);
-	};
+	const handleWSMount = useCallback((waveSurfer) => {
+		if (waveSurfer.markers) {
+			waveSurfer.clearMarkers();
+		}
+
+		wavesurferRefs.current = waveSurfer;
+		onChange(id, waveSurfer);
+
+		if (wavesurferRefs.current) {
+			wavesurferRefs.current.load(audio?.audioUrl, null, "auto");
+
+			wavesurferRefs.current.on("ready", () => {
+				const durationInSeconds = wavesurferRefs.current.getDuration();
+
+				// Convert duration to minutes and seconds
+				const minutes = Math.floor(durationInSeconds / 60);
+				const seconds = Math.floor(durationInSeconds % 60);
+
+				// Format the duration as "mm:ss"
+				const formattedDuration = `${minutes}:${seconds.toString().padStart(2, "0")}`;
+
+				// Update the state with the formatted duration
+				setTotalDuration(formattedDuration);
+			});
+		}
+	}, []);
+
+	useEffect(() => {
+		const wavesurfer = wavesurferRefs.current;
+
+		if (wavesurfer) {
+			// currentAudioRef.current = wavesurfer;
+			// Get initial mute status and volume
+			setIsMuted(wavesurfer.getMute());
+			wavesurfer.on("finish", handleFinish);
+			wavesurfer.on("audioprocess", handleTimeUpdate);
+		}
+
+		return () => {
+			wavesurfer.un("finish", handleFinish);
+			wavesurfer.un("audioprocess", handleTimeUpdate);
+			wavesurfer.destroy();
+		};
+	}, []);
 
 	const handleDownload = (audioFile) => {
 		if (isUserLogin()) {
@@ -123,6 +113,19 @@ export default function AudioCard({ id, title, description, audio, image }) {
 		}
 	};
 
+	const play = () => {
+		handleHasPlaying(id, true);
+	};
+
+	const pause = () => {
+		handleHasPlaying(id, false);
+	};
+
+	const handleFinish = () => {
+		setIsAudioProcess(false);
+		handleHasPlaying(0, false);
+	};
+
 	return (
 		<div className="row" style={{ marginBottom: 20 }}>
 			<div className="container">
@@ -130,8 +133,8 @@ export default function AudioCard({ id, title, description, audio, image }) {
 					<div className="waveSurfer">
 						<div className="audio-info">
 							<button
-								className={`${isPlay ? "audio-stop" : "audio-play"}`}
-								onClick={play}
+								className={`${isPlaying ? "audio-stop" : "audio-play"}`}
+								onClick={isPlaying ? pause : play}
 							/>
 							<img className="audio-icon" {...image} />
 							<div className="basic-info">
@@ -141,15 +144,15 @@ export default function AudioCard({ id, title, description, audio, image }) {
 						</div>
 
 						<div className={"waveSurfer__wave " + id}>
-							<WaveSurfer key={id} plugins={plugins} onMount={handleWSMount}>
+							<WaveSurfer key={id} onMount={handleWSMount}>
 								<WaveForm
 									id={`waveform${id}`}
-									className="waveform"
+									className="waveform-container"
 									progressColor={"#3b0264"}
 									height={50}
 									hideCursor={true}
 								>
-									<canvas ref={wavesurferRef} />
+									<canvas ref={wavesurferRefs} />
 								</WaveForm>
 							</WaveSurfer>
 						</div>

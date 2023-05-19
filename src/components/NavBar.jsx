@@ -120,18 +120,18 @@ export default function NavBar({ scrollY }) {
 						</div>
 						<div className="header-button">
 							<Link
-								onClick={showModalForContactUs}
-								className="aibeat-button"
-								style={{ margin: "0px 10px 0px 10px" }}
-							>
-								Contact Us
-							</Link>
-							<Link
 								onClick={showModal}
 								className="aibeat-button"
 								style={{ margin: "0px 10px 0px 10px" }}
 							>
 								Subscription
+							</Link>
+							<Link
+								onClick={showModalForContactUs}
+								className="aibeat-button"
+								style={{ margin: "0px 10px 0px 10px" }}
+							>
+								Contact Us
 							</Link>
 							{navBae}
 						</div>

@@ -22,7 +22,7 @@ export default function SubscriptionCard({ subscription, subscriptionHandle }) {
 				<ul className="features">
 					<div>
 						<button type="button" onClick={() => subscriptionHandle(item)}>
-							Subscription
+							Subscribe
 						</button>
 					</div>
 				</ul>
