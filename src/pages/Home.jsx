@@ -63,7 +63,11 @@ export default function Home() {
   const onSearchHandlerSubmit = async (e) => {
     e.preventDefault();
     const music = await get_music(search);
-    const makeData = music.map((el) => ({ ...el, wavesurferRef: createRef() }));
+    console.log("music is ", music);
+    const makeData = music?.map((el) => ({
+      ...el,
+      wavesurferRef: createRef(),
+    }));
     setAudioList(makeData);
   };
 
