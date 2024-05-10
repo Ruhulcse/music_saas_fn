@@ -35,6 +35,7 @@ export default function Home() {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [audioList, setAudioList] = useState([]);
+  const [spinLoading, setSpinLoading] = useState(false);
   const [subscription, setSubscription] = useState([]);
 
   // useEffect(() => {
@@ -61,6 +62,7 @@ export default function Home() {
     setSearch(e.target.value);
   };
   const onSearchHandlerSubmit = async (e) => {
+    setSpinLoading(true);
     e.preventDefault();
     const music = await get_music(search);
     console.log("music is ", music);
@@ -68,6 +70,8 @@ export default function Home() {
       ...el,
       wavesurferRef: createRef(),
     }));
+    setSpinLoading(false);
+
     setAudioList(makeData);
   };
 
@@ -327,7 +331,11 @@ export default function Home() {
         createCustomMusic={createCustomMusic}
         searchYourBeat={searchYourBeat}
       />
-      <AudioList audioList={audioList} setAudioList={setAudioList} />
+      <AudioList
+        spinLoading={spinLoading}
+        audioList={audioList}
+        setAudioList={setAudioList}
+      />
       <LogoSection logoSection={logoSection} />
       <AboutSection {...aboutSection} />
       <SubscriptionCard

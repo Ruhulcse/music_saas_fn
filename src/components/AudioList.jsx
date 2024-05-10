@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import AudioCard from "./AudioCard";
+import { Spin } from "antd";
 
-export default function AudioList({ audioList, setAudioList }) {
+export default function AudioList({ audioList, setAudioList, spinLoading }) {
   const [pagination, setPagination] = useState({
     data: [],
     hasMore: true,
@@ -74,25 +75,29 @@ export default function AudioList({ audioList, setAudioList }) {
       </div>
     ));
   }
-
+  console.log({ isAudioProcess });
   return (
     <section className="audio-section">
-      {audioList.length > 0 && (
-        <InfiniteScroll
-          className="scrollbar-hidden"
-          dataLength={audioList.length}
-          next={handleChange}
-          hasMore={false}
-          height={500}
-          endMessage={
-            <p style={{ textAlign: "center", color: "white" }}>
-              <b>Yay! You have seen it all</b>
-            </p>
-          }
-        >
-          {audioContent}
-        </InfiniteScroll>
-      )}
+      <>
+        <Spin tip="Generating Beats..." spinning={spinLoading}>
+          {audioList?.length > 0 && (
+            <InfiniteScroll
+              className="scrollbar-hidden"
+              dataLength={audioList.length}
+              next={handleChange}
+              hasMore={false}
+              height={500}
+              endMessage={
+                <p style={{ textAlign: "center", color: "white" }}>
+                  <b>Yay! You have seen it all</b>
+                </p>
+              }
+            >
+              {audioContent}
+            </InfiniteScroll>
+          )}
+        </Spin>
+      </>
     </section>
   );
 }
