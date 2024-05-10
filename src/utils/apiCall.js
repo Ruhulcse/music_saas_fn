@@ -73,7 +73,7 @@ export const get_music = async (search) => {
       downloadPath: el?.audio_url,
     },
   }));
-  console.log(mapData);
+  // console.log(mapData);
   return mapData;
 };
 

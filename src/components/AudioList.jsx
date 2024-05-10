@@ -75,7 +75,7 @@ export default function AudioList({ audioList, setAudioList, spinLoading }) {
       </div>
     ));
   }
-  console.log({ isAudioProcess });
+
   return (
     <section className="audio-section">
       <>

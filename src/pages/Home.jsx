@@ -75,6 +75,7 @@ export default function Home() {
     setAudioList(makeData);
   };
 
+  // console.log(object)
   const subscriptionHandle = (item) => {
     localStorage.removeItem("item");
     localStorage.setItem("item", JSON.stringify(item));
