@@ -1,7 +1,7 @@
+import { Spin } from "antd";
 import React, { useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import AudioCard from "./AudioCard";
-import { Spin } from "antd";
 
 export default function AudioList({ audioList, setAudioList, spinLoading }) {
   const [pagination, setPagination] = useState({
@@ -38,7 +38,7 @@ export default function AudioList({ audioList, setAudioList, spinLoading }) {
             el.wavesurferRef.current.pause();
             el.isPlaying = false;
           } else {
-            el.wavesurferRef.current.play();
+            el?.wavesurferRef?.current?.play();
             el.isPlaying = isPlay;
           }
         } else {

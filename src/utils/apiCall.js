@@ -60,7 +60,7 @@ export const get_music = async (search) => {
   //   },
   // }));
   const mapData = res?.data.data.map((el) => ({
-    id: el?.song_id,
+    id: el?.id,
     isPlaying: false,
     title: el?.title,
     description: el?.model_name,
@@ -73,7 +73,7 @@ export const get_music = async (search) => {
       downloadPath: el?.audio_url,
     },
   }));
-  // console.log(mapData);
+  console.log("map data ", mapData);
   return mapData;
 };
 
