@@ -3,7 +3,7 @@
  */
 
 import axios from "axios";
-const apiUrl = "http://35.172.205.34";
+const apiUrl = "https://music-saas.onrender.com";
 const axiosServices = axios.create({
   baseURL: apiUrl,
   headers: {
