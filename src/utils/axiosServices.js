@@ -3,7 +3,7 @@
  */
 
 import axios from "axios";
-const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl = "http://35.172.205.34";
 const axiosServices = axios.create({
   baseURL: apiUrl,
   headers: {
