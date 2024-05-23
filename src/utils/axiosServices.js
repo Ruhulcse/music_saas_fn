@@ -3,7 +3,8 @@
  */
 
 import axios from "axios";
-const apiUrl = "https://music-saas.onrender.com";
+// const apiUrl = "https://music-saas.onrender.com";
+const apiUrl = "http://free.digontosoft.com";
 const axiosServices = axios.create({
   baseURL: apiUrl,
   headers: {
